@@ -25,15 +25,12 @@ export const getCurrentTime = (date) => {
   return time;
 }
 
-export const requestAxois = (url) => {
-  axios.get(url, {
-    headers: { 'Access-Control-Allow-Origin': '*',
-    "ngrok-skip-browser-warning":"any" }
+export const requestAxois = async (url) => {
+  await axios.get(url, {
+    headers: { "ngrok-skip-browser-warning":"any" }
   })
   .then(res => {
-    console.log(res)
     console.log(res.data)
-    console.log(typeof(res.data))
     return res.data;
   })
   .catch(err => {

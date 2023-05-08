@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import Battery from 'components/Battery';
 import { useState, useEffect } from 'react';
 import { getCurrentDate } from 'services/utils';
+import styled from 'styled-components'
+import Battery from 'components/Battery';
 
 const Header = styled.div`
   position: absolute;
