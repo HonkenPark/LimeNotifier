@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import axios from 'axios';
+import { requestAxois } from 'services/utils';
 
 const Background = styled.div`
   position: absolute;
@@ -31,8 +33,30 @@ const HotDealResults = styled.div`
 `
 
 const HotdealBody = () => {
-  // 요청후 데이터 받기
-  // 로컬스토리지 사용 고려
+  // axios.get('https://f3e7-222-112-77-160.ngrok-free.app/hotdeal', {
+  //   headers: { 'Access-Control-Allow-Origin': '*',
+  //   "ngrok-skip-browser-warning":"any" }
+  // })
+  // .then(res => {
+  //   console.log(res)
+  //   console.log(res.data)
+  //   console.log(typeof(res.data))
+  // })
+  // .catch(err => {
+  //   console.error(err);
+  // });
+  let res = requestAxois('https://f3e7-222-112-77-160.ngrok-free.app/hotdeal');
+  if (res) {
+    const json = JSON.parse(res.replace(/'/g, '"').replace(/False/g, "false").replace(/"\r\n"/g, ""));
+    console.log(json.result.search)
+    console.log(json.result.keyword)
+  }
+  else {
+    console.log(res);
+  }
+  console.log(res);
+  console.log(typeof(res));
+
   return (
     <>
       <Background>

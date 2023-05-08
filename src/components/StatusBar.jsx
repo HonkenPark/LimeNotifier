@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Battery from 'components/Battery';
 import { useState, useEffect } from 'react';
+import { getCurrentDate } from 'services/utils';
 
 const Header = styled.div`
   position: absolute;
@@ -51,31 +52,6 @@ const PercentText = styled.p`
 
   color: #FFFFFF;
 `
-
-const getCurrentDate = (date) => {
-  let result = { 'month_day' : "", 'time' : "" }
-  let month_day = getCurrentMonthDay(date);
-  let time = getCurrentTime(date);
-  result.month_day = month_day;
-  result.time = time;
-  return result;
-}
-
-const getCurrentMonthDay = (date) => {
-  let month_day = new Intl.DateTimeFormat('en-US',
-  {
-    dateStyle: 'long',
-  }).format(date)
-  return month_day;
-}
-
-const getCurrentTime = (date) => {
-  let time = new Intl.DateTimeFormat('en-US',
-  {
-    timeStyle: 'short'
-  }).format(date)
-  return time;
-}
 
 const StatusBar = () => {
   let date = new Date();
