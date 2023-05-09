@@ -1,4 +1,11 @@
-import axios from 'axios';
+export const getCurrentDateDigit = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const today = `${year}${month}${day}`;
+  return today
+}
 
 export const getCurrentDate = (date) => {
   let result = { 'month_day' : "", 'time' : "" }
@@ -23,17 +30,4 @@ export const getCurrentTime = (date) => {
     timeStyle: 'short'
   }).format(date)
   return time;
-}
-
-export const requestAxois = async (url) => {
-  await axios.get(url, {
-    headers: { "ngrok-skip-browser-warning":"any" }
-  })
-  .then(res => {
-    console.log(res.data)
-    return res.data;
-  })
-  .catch(err => {
-    console.error(err);
-  });
 }

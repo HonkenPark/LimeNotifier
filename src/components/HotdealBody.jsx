@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { requestAxois, getCurrentTime } from 'services/utils';
+import { getCurrentTime } from 'services/utils';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -34,18 +34,19 @@ const HotDealResults = styled.div`
 `
 
 const HotdealBody = () => {
+  const delay = 1000 * 60 * 30 // 30분
   const composeSentence = (result, keyword) => {
     let date = new Date();
     if (result) {
-      return '[' + result + '] 결과를 찾았습니다!!'
+      return '[' + keyword + '] 결과를 찾았습니다!!'
     }
     else {
       return '[' + getCurrentTime(date) + '] 현재까지 조건에 맞는 게시물이 없습니다.'
     }
   }
-  const [result, setResult] = useState(composeSentence(false, ''))
 
-  //TODO: result를 로컬스토리지에 json화하여 누적 저장 시키고 읽어오는 로직 구현
+  let initialState = composeSentence(false, '');
+  const [result, setResult] = useState({previous: initialState, current: initialState})
 
   useEffect(() => {
     async function fetchData() {
@@ -53,64 +54,38 @@ const HotdealBody = () => {
         headers: { "ngrok-skip-browser-warning":"any" }
       })
       .then(res => {
-        console.log(res.data.result)
         const json = JSON.parse(res.data.result.replace(/'/g, '"').replace(/False/g, "false").replace(/"\r\n"/g, ""));
-        console.log(json);
+        let result_list = {previous: result.current, current: composeSentence(json.search, json.keyword)};
+        setResult(result_list);
+
         if (json.search) {
           console.log('find!!')
-          setResult(composeSentence(json.search, json.keyword));
         }
         else {
           console.log('not yet..')
-          setResult(composeSentence(json.search, json.keyword));
         }
         return json;
       })
       .catch(err => {
         console.error(err);
       });
-      
     }
     fetchData();
 
-    // const interval = setInterval(async () => {
-    //   let res = await requestAxois('https://f3e7-222-112-77-160.ngrok-free.app/hotdeal');
-    //   if (res) {
-    //     const json = JSON.parse(res.replace(/'/g, '"').replace(/False/g, "false").replace(/"\r\n"/g, ""));
-    //     console.log(json.result.search)
-    //     console.log(json.result.keyword)
-    //     console.log(typeof(res));
-    //   }
-    //   else {
-    //     console.log(res);
-    //   }
-    // }, 6000000); // 1분마다 업데이트
+    const interval = setInterval(async () => {
+      // fetchData();
+    }, delay);
 
-    // return () => {
-    //   clearInterval(interval);
-    // }
+    return () => {
+      clearInterval(interval);
+    }
   }, [])
-
-  // axios.get('https://f3e7-222-112-77-160.ngrok-free.app/hotdeal', {
-  //   headers: { 'Access-Control-Allow-Origin': '*',
-  //   "ngrok-skip-browser-warning":"any" }
-  // })
-  // .then(res => {
-  //   console.log(res)
-  //   console.log(res.data)
-  //   console.log(typeof(res.data))
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  // });
-  
-  
 
   return (
     <>
       <Background>
         <HotDealResults>
-          a<br />{result}
+          {result.previous}<br />{result.current}
         </HotDealResults>
       </Background>
     </>
