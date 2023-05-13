@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getCurrentDateDigit } from 'services/utils';
 import styled from 'styled-components';
 import axios from 'axios';
+import { backend_url, koreaexim_url } from 'services/config';
 
 const Background = styled.div`
   position: absolute;
@@ -24,10 +25,10 @@ const CurrencyBody = () => {
         'EUR': {'up': '0', 'down': '0'},
         'JPY': {'up': '0', 'down': '0'},
       }
-      await axios.get('https://f3e7-222-112-77-160.ngrok-free.app/currency', {
+      await axios.get(backend_url + '/currency', {
         headers: { "ngrok-skip-browser-warning":"any" },
         params: {
-          url:  'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON',
+          url:  koreaexim_url + '/exchangeJSON',
           authkey: 'QFbn3uFi2qt75VOXPvnnGxuVirl8XfgP',
           searchdate: getCurrentDateDigit(),
           data: 'AP01'

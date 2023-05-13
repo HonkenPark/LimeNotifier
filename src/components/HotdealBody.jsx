@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { getCurrentTime } from 'services/utils';
 import styled from 'styled-components';
 import axios from 'axios';
+import { backend_url } from 'services/config';
+import { telegram_token, telegram_chatid_Magnus } from 'services/config';
+import { send_message_telegram } from 'services/config';
 
 const Background = styled.div`
   position: absolute;
@@ -38,7 +41,7 @@ const HotdealBody = () => {
   const composeSentence = (result, keyword) => {
     let date = new Date();
     if (result) {
-      return '[' + keyword + '] 결과를 찾았습니다!!'
+      return '[' + getCurrentTime(date) + '] ::: ' + keyword + ' ::: 결과를 찾았습니다!!'
     }
     else {
       return '[' + getCurrentTime(date) + '] 현재까지 조건에 맞는 게시물이 없습니다.'
@@ -50,16 +53,17 @@ const HotdealBody = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await axios.get('https://f3e7-222-112-77-160.ngrok-free.app/hotdeal', {
+      await axios.get(backend_url + '/hotdeal', {
         headers: { "ngrok-skip-browser-warning":"any" }
       })
       .then(res => {
-        const json = JSON.parse(res.data.result.replace(/'/g, '"').replace(/False/g, "false").replace(/"\r\n"/g, ""));
+        const json = JSON.parse(res.data.result.replace(/'/g, '"').replace(/True/g, "true").replace(/False/g, "false").replace(/"\r\n"/g, ""));
         let result_list = {previous: result.current, current: composeSentence(json.search, json.keyword)};
         setResult(result_list);
 
         if (json.search) {
           console.log('find!!')
+          send_message_telegram(`${json.keyword} 키워드가 탐지되었습니다!!`);
         }
         else {
           console.log('not yet..')

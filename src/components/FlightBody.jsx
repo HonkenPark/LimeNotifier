@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getCurrentTime } from 'services/utils';
 import styled from 'styled-components';
 import axios from 'axios';
+import { backend_url, koreaexim_url } from 'services/config';
 
 const Background = styled.div`
   position: absolute;
@@ -54,7 +55,7 @@ const FlightBody = () => {
   //   data: 'AP01',
   // };
 
-  // fetch('https://www.koreaexim.go.kr/site/program/financial/exchangeJSON', {
+  // fetch(koreaexim_url + '/exchangeJSON', {
   //       method: 'POST', // or 'PUT'
   //       body: JSON.stringify(data), // data can be `string` or {object}!
   //       headers:{
@@ -66,7 +67,7 @@ const FlightBody = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await axios.get('https://f3e7-222-112-77-160.ngrok-free.app/flight', {
+      await axios.get(backend_url + '/flight', {
         headers: { "ngrok-skip-browser-warning":"any" }
       })
       .then(res => {
