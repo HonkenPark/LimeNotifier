@@ -71,17 +71,25 @@ const Price = styled.div`
 
   color: #FFFFFF;
 `
+let results = {
+  'USD': {'up': '0', 'down': '0'},
+  'EUR': {'up': '0', 'down': '0'},
+  'JPY': {'up': '0', 'down': '0'},
+}
 
 const CurrencyBody = () => {
-  const delay = 1000 * 60 * 30 // 30분
-  let results = {
+  const delay = 1000 * 60 * 10 // 10분
+  const [result, setResult] = useState({
     'USD': {'up': '0', 'down': '0'},
     'EUR': {'up': '0', 'down': '0'},
     'JPY': {'up': '0', 'down': '0'},
-  }
-  const [result, setResult] = useState(results);
+  });
   const regex = /(?<=\.\d{1})\b/g;
-  
+
+  const reloadPrices = (results) => {
+    console.log(result);
+    setResult(results);
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -110,8 +118,7 @@ const CurrencyBody = () => {
             results.JPY.down = element.ttb.replace(regex, '0');
           }
         });
-        console.log(results);
-        setResult(results);
+        reloadPrices(results);
       })
       .catch(err => {
         console.error(err);

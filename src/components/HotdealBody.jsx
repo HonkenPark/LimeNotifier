@@ -77,7 +77,7 @@ const HotdealBody = () => {
     fetchData();
 
     const interval = setInterval(async () => {
-      // fetchData();
+      fetchData();
     }, delay);
 
     return () => {
