@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const backend_url = 'https://2159-222-112-77-160.ngrok-free.app';
+export const backend_url = 'https://b5a7-222-112-77-160.ngrok-free.app/';
 export const koreaexim_url = 'https://www.koreaexim.go.kr/site/program/financial';
 export const telegram_token = '5752826181:AAFr2i46cjgH3mzj1nDR8uKvGKiHoDGsduE';
 export const telegram_chatid_Magnus = '5618081824';
